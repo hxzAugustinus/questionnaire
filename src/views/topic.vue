@@ -31,7 +31,7 @@
                 <v-img :src="require('../assets/error.png')" contain height=80></v-img>
                 <p>正确答案: {{currentIssue.answer.join('')}} </p>
                 <div v-for="(item,key) in rightAnswers" :key="key">
-                  {{ currentIssue.type==2? item.key+'.':'' }} {{item.value}}1111111111111111111111111111
+                  {{ currentIssue.type==2? item.key+'.':'' }} {{item.value}}
                 </div>
               </div>
             </scroll-bar>
@@ -195,7 +195,7 @@ export default {
   data: () => ({
     scrollTrackYStyle: {
       backgroundColor: 'transparent',
-      right: '40px',
+      right: '43px',
       display: 'block!important'
     },
     scrollBarYStyle: {

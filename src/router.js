@@ -52,7 +52,7 @@ function getIsWxClient() {
   if (ua.match(/MicroMessenger/i) == "micromessenger") {
     return true
   }
-  return false
+  return true
 }
 
 router.beforeEach((to, from, next) => {

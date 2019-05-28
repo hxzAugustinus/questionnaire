@@ -46,6 +46,7 @@ export default {
           console.log(res)
           this.$store.commit('initUser', res)
         }, err => {
+          console.log(err)
           this.$toast.fail({ message: err.msg, duration: 2000 })
         })
       }

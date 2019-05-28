@@ -20,6 +20,7 @@
     <v-dialog v-model="options.onOff" content-class='dialog-content'>
       <v-img :src="require('../assets/dialog-qrcode.png')" contain>
         <img class="qrcode" :src="qrcode" />
+        <button class="nav" @click='refresh'>刷新战绩</button>
       </v-img>
       <v-icon @click="close">close</v-icon>
     </v-dialog>
@@ -113,6 +114,23 @@
     margin-top: 45%;
   }
 
+  .nav {
+    position: absolute;
+    width: 8.6875rem;
+    height: 2.4375rem;
+    left: calc((100% - 8.6875rem) / 2);
+    bottom: 0;
+    margin-bottom: 19.7%;
+    background: rgba(198, 0, 7, 1);
+    border-radius: 1.1875rem;
+    border: 1px solid rgba(252, 221, 163, 1);
+    font-size: 1.125rem;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(252, 221, 163, 1);
+    line-height: 1.5625rem;
+  }
+
   .v-icon {
     margin-top: 0.625rem;
     border: 2px solid #fcd79c;
@@ -152,6 +170,9 @@ export default {
     },
     showQR () {
       this.options.onOff = true
+    },
+    refresh () {
+      this.$router.replace('topic')
     },
     close () {
       this.options.onOff = false
