@@ -40,12 +40,13 @@ _axios.interceptors.response.use(
     if (response.status == 200 && response.data.code == 1) {
       return response.data.data
     } else {
-      handerError(response.data.data)
+      handerError(response.data.data || {})
       return Promise.reject(response.data)
     }
   },
   function(error) {
     // Do something with response error
+    handerError(error || {})
     return Promise.reject(error)
   }
 )

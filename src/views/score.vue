@@ -138,6 +138,7 @@
     font-size: 1.875rem;
     color: #fcd79c;
     padding: 0.3125rem;
+    transition: none;
   }
 }
 </style>

@@ -5,7 +5,7 @@
       <v-text-field v-model="name" :error-messages="nameErrors" label="姓名" required @blur="blurcheck('name')"></v-text-field>
       <v-text-field v-model="mobile" type='number' :error-messages="mobileErrors" label="电话" required @blur="blurcheck('mobile')"></v-text-field>
       <div class="code">
-        <v-text-field v-model="authcode" type='number' :error-messages="authcodeErrors" label="验证码" required @blur="blurcheck('authcode')"></v-text-field>
+        <v-text-field v-model="authcode" maxlength=6 type='text' :error-messages="authcodeErrors" label="验证码" required @blur="blurcheck('authcode')"></v-text-field>
         <v-btn absolute dark :disabled="authenable" @click.stop="getCode">{{btnName}}</v-btn>
       </div>
       <v-text-field ref="select" v-model="school.name" readonly :error-messages="schoolErrors" label="学校" required @focus="showPicker"></v-text-field>
@@ -203,6 +203,7 @@ export default {
         Api.verify(param).then(() => {
 
         }, err => {
+          console.log(err)
           this.$toast({ message: err.msg, duration: 2000 })
         })
       }

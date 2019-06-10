@@ -7,8 +7,10 @@ module.exports = {
   crossorigin: "anonymous",
   integrity: true,
   devServer: {
-    port: 8080,
+    port: 443,
+    /* https: true, */
     disableHostCheck: true //处理host不识别问题
+    /*  host: "gqjy.jinlingkeji.cn" */
   },
   configureWebpack: {
     devtool: "source-map"

@@ -31,20 +31,20 @@
                 <v-img :src="require('../assets/error.png')" contain height=80></v-img>
                 <p>正确答案: {{currentIssue.answer.join('')}} </p>
                 <div v-for="(item,key) in rightAnswers" :key="key">
-                  {{ currentIssue.type==2? item.key+'.':'' }} {{item.value}}
+                  {{item.key+'.&nbsp;&nbsp;' +item.value}}
                 </div>
               </div>
             </scroll-bar>
           </v-img>
           <v-btn block icon @click="done(1)" :ripple="false">
-            <v-img v-if='activeIndex+1 < issues.length' :src="require('../assets/next-btn.png')" contain></v-img>
+            <v-img v-if='!isLast' :src="require('../assets/next-btn.png')" contain></v-img>
             <v-img v-else :src="require('../assets/finish-btn.png')" contain> </v-img>
           </v-btn>
         </template>
         <template v-else>
           <v-img :src="require('../assets/right.png')"></v-img>
           <v-btn block icon @click="done(2)" :ripple="false">
-            <v-img v-if='activeIndex+1 < issues.length' :src="require('../assets/next-btn.png')" contain></v-img>
+            <v-img v-if='!isLast' :src="require('../assets/next-btn.png')" contain></v-img>
             <v-img v-else :src="require('../assets/finish-btn.png')" contain> </v-img>
           </v-btn>
         </template>
@@ -211,8 +211,11 @@ export default {
     }
   }),
   computed: {
+    isLast () {
+      return this.activeIndex + 1 >= this.issues.length
+    },
     btnName () {
-      return this.activeIndex < this.issues.length - 1 ? '下一题' : '查看成绩'
+      return this.isLast ? '查看成绩' : '下一题'
     },
     currentIssue () {
       return this.issues[this.activeIndex]
@@ -231,7 +234,11 @@ export default {
       activity_id: this.$store.state.explain.id
     }
     Api.question(params).then(res => {
-      this.issues = res.questions
+      let temp = res.questions
+      temp.forEach(item => {
+        item.title = item.title.replace(/\(/g, '（').replace(/\)/g, '）')
+      })
+      this.issues = temp
       this.reply_id = res.reply_id
     })
   },
@@ -302,7 +309,7 @@ export default {
       this.response = []
       if (i > 0) {
         setTimeout(() => {
-          this.activeIndex < this.issues.length - 1 ? this.activeIndex += 1 : this.$router.replace('score')
+          this.isLast ? this.$router.replace('score') : this.activeIndex += 1
         }, 350)
       }
     }

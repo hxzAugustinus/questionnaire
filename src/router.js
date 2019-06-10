@@ -24,17 +24,20 @@ const router = new Router({
     {
       path: "/topic",
       name: "topic",
-      component: () => import("./views/topic.vue")
+      component: () => import("./views/topic.vue"),
+      meta: { requiresAuth: true }
     },
     {
       path: "/score",
       name: "score",
-      component: () => import("./views/score.vue")
+      component: () => import("./views/score.vue"),
+      meta: { requiresAuth: true }
     },
     {
       path: "/rank",
       name: "rank",
-      component: () => import("./views/rank.vue")
+      component: () => import("./views/rank.vue"),
+      meta: { requiresAuth: true }
     },
     {
       path: "/client",
@@ -52,7 +55,7 @@ function getIsWxClient() {
   if (ua.match(/MicroMessenger/i) == "micromessenger") {
     return true
   }
-  return true
+  return false
 }
 
 router.beforeEach((to, from, next) => {

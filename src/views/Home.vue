@@ -5,6 +5,7 @@
     <v-btn @click="nav" icon absolute depressed :ripple="false">
       <v-img :src="require('../assets/start-btn.png')"></v-img>
     </v-btn>
+    <!-- <hello-world></hello-world> -->
   </div>
 </template>
 
@@ -37,7 +38,11 @@
 </style>
 
 <script>
+//import HelloWorld from '../components/HelloWorld'
 export default {
+  components: {
+    // HelloWorld
+  },
   computed: {
     user () {
       return this.$store.state.user

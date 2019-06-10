@@ -34,8 +34,12 @@ npm run lint
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-todo:
+notice:
 
-```
-4.背景图片合并
-```
+1. router.js 中的 getIsWxClient 是否打开
+2. vue-scroll-bar 修改了源码，注意迁徙
+3. 在.env.production 文件中的切换
+   {
+   https://gqjy.jinlingkeji.cn:/ ------> VUE_APP_httpHost=https://api.jinlingkeji.cn/api/v9/
+   https://gqjydev.jinlingkeji.cn/ ------> VUE_APP_httpHost=https://develop.jinlingkeji.cn/api/v9
+   }

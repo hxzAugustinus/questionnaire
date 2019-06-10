@@ -4,8 +4,10 @@
 
 <style lang="scss" scoped>
 div {
+  position: absolute;
+  top: 50%;
+  width: 100%;
   text-align: center;
-  margin-top: 50%;
 }
 </style>
 

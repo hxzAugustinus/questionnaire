@@ -31,7 +31,8 @@ export default new Vuex.Store({
   actions: {
     clearUser(context) {
       context.commit("initUser", null)
-      Vue.router.replace("home")
+      /* TODO:加提示跳回登陆 */
+      /* Vue.router.replace("home") */
     }
   }
 })

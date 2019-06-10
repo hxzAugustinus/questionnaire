@@ -8,10 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@caofeilong/weixin_js": "^1.0.2",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "lib-flexible": "^0.3.2",
+    "m-commonjs-jweixin": "^1.0.1",
     "md5": "^2.2.1",
     "qs": "^6.7.0",
     "vant": "^1.6.18",
@@ -20,8 +20,7 @@
     "vue-router": "^3.0.3",
     "vue-scroller": "^2.2.4",
     "vuetify": "^1.5.5",
-    "vuex": "^3.0.1",
-    "weixin-js-sdk": "^1.4.0-test"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@64robots/vue-cli-plugin-validation": "^1.0.1",
