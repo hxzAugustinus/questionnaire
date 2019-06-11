@@ -2,6 +2,7 @@
   <div class="page-home">
     <v-img class="declaration" :src="require('../assets/declaration.png')" @click="declaration"></v-img>
     <v-img class="title" :src="require('../assets/home-title.png')"></v-img>
+    <v-img class="content" :src="require('../assets/home-content.png')"></v-img>
     <v-btn @click="nav" icon absolute depressed :ripple="false">
       <v-img :src="require('../assets/start-btn.png')"></v-img>
     </v-btn>
@@ -23,15 +24,25 @@
   }
 
   & > .title {
-    width: 80%;
+    width: 18rem;
+    height: 11rem;
     position: absolute;
-    top: 18%;
-    left: 10%;
+    top: 8rem;
+    left: calc((100% - 18rem) / 2);
+  }
+
+  & > .content {
+    width: 8rem;
+    height: 1rem;
+    position: absolute;
+    top: 23rem;
+    left: calc((100% - 8rem) / 2);
   }
   .v-btn {
     width: 17.5rem;
     height: 3.75rem;
-    bottom: 29%;
+    position: absolute;
+    top: 26rem;
     left: calc((100% - 17.5rem) / 2);
   }
 }

@@ -8,14 +8,14 @@
         <v-text-field v-model="authcode" maxlength=6 type='text' :error-messages="authcodeErrors" label="验证码" required @blur="blurcheck('authcode')"></v-text-field>
         <v-btn absolute dark :disabled="authenable" @click.stop="getCode">{{btnName}}</v-btn>
       </div>
-      <v-text-field ref="select" v-model="school.name" readonly :error-messages="schoolErrors" label="学校" required @focus="showPicker"></v-text-field>
+      <!-- <v-text-field ref="select" v-model="school.name" readonly :error-messages="schoolErrors" label="学校" required @focus="showPicker"></v-text-field> -->
       <v-btn class="submit" block icon @click="submit" :ripple="false">
         <v-img :src="require('../assets/login-btn.png')" contain></v-img>
       </v-btn>
     </form>
-    <van-popup v-model="pickArea" position="bottom">
+    <!-- <van-popup v-model="pickArea" position="bottom">
       <van-picker class='area-select' show-toolbar title="选择学校" :columns="pickers" @change="onChange" @confirm="ensure(1)" @cancel="ensure(0)" />
-    </van-popup>
+    </van-popup> -->
     <v-dialog v-model="dialog" width="200" hide-overlay>
       <v-card height="170" dark class="dialog-bg">
         <v-img :src="require('../assets/success.png')" width="65" contain></v-img>
@@ -27,27 +27,27 @@
 
 <style lang="scss">
 /* 框架样式修改 */
-.page-login {
-  .area-select {
-    ul,
-    ol {
-      padding-left: 0;
-    }
-    .columns2 {
-      flex: 2;
-    }
-    .columns3 {
-      flex: 2;
-    }
-  }
-  .v-label {
-    font-size: 1.25rem;
-  }
+// .page-login {
+//   // .area-select {
+//   //   ul,
+//   //   ol {
+//   //     padding-left: 0;
+//   //   }
+//   //   .columns2 {
+//   //     flex: 2;
+//   //   }
+//   //   .columns3 {
+//   //     flex: 2;
+//   //   }
+//   // }
+//   // .v-label {
+//   //   font-size: 1.25rem;
+//   // }
 
-  .theme--light.v-text-field > .v-input__control > .v-input__slot:before {
-    border-color: rgba(0, 0, 0, 0.12);
-  }
-}
+//   // .theme--light.v-text-field > .v-input__control > .v-input__slot:before {
+//   //   border-color: rgba(0, 0, 0, 0.12);
+//   // }
+// }
 
 .v-menu__content {
   display: none;
@@ -123,7 +123,7 @@ export default {
     name: { required, maxLength: maxLength(10) },
     mobile: { required, isPhone: function (tel) { return (/^1[3|4|5|7|8|9]\d{9}$/.test(tel)) } },
     authcode: { required, numeric },
-    school: { name: { required } }
+    // school: { name: { required } }
   },
   data: () => ({
     name: "",
@@ -140,12 +140,12 @@ export default {
     dialog: false,
   }),
   computed: {
-    schoolErrors () {
-      const errors = []
-      if (!this.$v.school.name.$dirty) return errors
-      !this.$v.school.name.required && errors.push("学校不能为空!")
-      return errors
-    },
+    // schoolErrors () {
+    //   const errors = []
+    //   if (!this.$v.school.name.$dirty) return errors
+    //   !this.$v.school.name.required && errors.push("学校不能为空!")
+    //   return errors
+    // },
     nameErrors () {
       const errors = []
       if (!this.$v.name.$dirty) return errors
@@ -167,27 +167,27 @@ export default {
       !this.$v.authcode.numeric && errors.push("验证码只能是数字!")
       return errors
     },
-    pickers () {
-      if (this.areaList.length) {
-        return [
-          { className: 'columns1', values: this.areaList.map(v => { return v.name }) },
-          { className: 'columns2', values: this.areaList[this.colm1].child.map(v => { return v.name }) },
-          { className: 'columns3', values: this.areaList[this.colm1].child[this.colm2].child.map(v => { return v.name }) }]
-      } else {
-        return []
-      }
-    }
+    // pickers () {
+    //   if (this.areaList.length) {
+    //     return [
+    //       { className: 'columns1', values: this.areaList.map(v => { return v.name }) },
+    //       { className: 'columns2', values: this.areaList[this.colm1].child.map(v => { return v.name }) },
+    //       { className: 'columns3', values: this.areaList[this.colm1].child[this.colm2].child.map(v => { return v.name }) }]
+    //   } else {
+    //     return []
+    //   }
+    // }
   },
-  beforeMount () {
-    Api.pickList().then(
-      res => {
-        this.areaList = res;
-      },
-      err => {
-        console.log(err)
-      }
-    )
-  },
+  // beforeMount () {
+  //   Api.pickList().then(
+  //     res => {
+  //       this.areaList = res;
+  //     },
+  //     err => {
+  //       console.log(err)
+  //     }
+  //   )
+  // },
   methods: {
     blurcheck (type) {
       window.scroll(0, 0)
@@ -224,35 +224,35 @@ export default {
         }
       }, 1000)
     },
-    showPicker () {
-      this.pickArea = true
-      this.$refs.select.blur()
-      window.scroll(0, 0)
-    },
-    onChange (picker, values, index) {
-      let indexlist = picker.getIndexes()
-      switch (index) {
-        case 0:
-          this.colm1 = indexlist[0]
-          this.colm2 = 0
-          this.colm3 = 0
-          break;
-        case 1:
-          this.colm2 = indexlist[1]
-          this.colm3 = 0
-          break;
-        default:
-          this.colm3 = indexlist[2]
-          break;
-      }
-    },
-    ensure (i) {
-      this.pickArea = false
-      if (i) {
-        this.school = this.areaList[this.colm1].child[this.colm2].child[this.colm3];
-      }
-      this.$v.school.name.$touch()
-    },
+    // showPicker () {
+    //   this.pickArea = true
+    //   this.$refs.select.blur()
+    //   window.scroll(0, 0)
+    // },
+    // onChange (picker, values, index) {
+    //   let indexlist = picker.getIndexes()
+    //   switch (index) {
+    //     case 0:
+    //       this.colm1 = indexlist[0]
+    //       this.colm2 = 0
+    //       this.colm3 = 0
+    //       break;
+    //     case 1:
+    //       this.colm2 = indexlist[1]
+    //       this.colm3 = 0
+    //       break;
+    //     default:
+    //       this.colm3 = indexlist[2]
+    //       break;
+    //   }
+    // },
+    // ensure (i) {
+    //   this.pickArea = false
+    //   if (i) {
+    //     this.school = this.areaList[this.colm1].child[this.colm2].child[this.colm3];
+    //   }
+    //   this.$v.school.name.$touch()
+    // },
     submit () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
@@ -260,7 +260,7 @@ export default {
           mobile: this.mobile,
           captcha: this.authcode,
           username: this.name,
-          university_id: this.school.id
+          // university_id: this.school.id
         }
         Api.login(param).then(res => {
           this.$store.commit('initUser', res)
@@ -270,6 +270,7 @@ export default {
             this.$router.replace("topic")
           }, 1500)
         }, err => {
+          console.log('提交失败')
           this.$toast.fail({ message: err.msg, duration: 2000 })
         })
       }
