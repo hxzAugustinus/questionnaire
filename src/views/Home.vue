@@ -41,7 +41,8 @@
   .v-btn {
     width: 17.5rem;
     height: 3.75rem;
-    bottom: 29%;
+    position: absolute;
+    top: 26rem;
     left: calc((100% - 17.5rem) / 2);
   }
 }
