@@ -1,20 +1,15 @@
 <template>
   <div class="page-topic" v-if="issues.length>0">
-    <aside>{{(activeIndex+1)+'/'+issues.length}}</aside>
+    <aside>{{(activeIndex+1)+'/25'}}</aside>
     <p class="question">{{(activeIndex+1)+'.'+currentIssue.title}}</p>
     <v-content>
       <scroller class="wrap">
         <v-list>
           <template v-for="(item,i) in currentIssue.options">
-            <v-list-tile
-              :key="i"
-              ripple
-              @click="select(item,currentIssue.options)"
-              :class="[item.check?'active':'']"
-            >
+            <v-list-tile :key="i" ripple @click="select(item,currentIssue.options)" :class="[item.check?'active':'']">
               <v-list-tile-action class="icon">
-                <span v-show="!item.check">{{item.key}}</span>
-                <v-img v-show="item.check" :src="require('../assets/active.png')"></v-img>
+                <span v-show="!item.check"> {{item.key}}</span>
+                <v-img v-show="item.check" :src="require('../assets/active.png')"> </v-img>
               </v-list-tile-action>
               <v-list-tile-content>{{item.value}}</v-list-tile-content>
             </v-list-tile>
@@ -27,37 +22,30 @@
         <v-img :src="require('../assets/answer-btn.png')" contain></v-img>
       </v-btn>
     </footer>
-    <v-dialog v-model="options.switch" content-class="dialog-card" persistent no-click-animation>
+    <v-dialog v-model="options.switch" content-class='dialog-card' persistent no-click-animation>
       <div>
-        <template v-if="options.tipType==1">
+        <template v-if='options.tipType==1'>
           <v-img :src="require('../assets/wrong.png')" contain>
-            <scroll-bar
-              class="hint"
-              :watchValue="rightAnswers"
-              :class="[ currentIssue.type==2 ?'multis':'' ]"
-              :scrollTrackYStyle="scrollTrackYStyle"
-              :scrollBarYStyle="scrollBarYStyle"
-            >
+            <scroll-bar class="hint" :watchValue='rightAnswers' :class="[ currentIssue.type==2 ?'multis':'' ]" :scrollTrackYStyle='scrollTrackYStyle' :scrollBarYStyle='scrollBarYStyle'>
               <div>
-                <v-img :src="require('../assets/error.png')" contain height="80"></v-img>
-                <p>正确答案: {{currentIssue.answer.join('')}}</p>
-                <div
-                  v-for="(item,key) in rightAnswers"
-                  :key="key"
-                >{{item.key+'.&nbsp;&nbsp;' +item.value}}</div>
+                <v-img :src="require('../assets/error.png')" contain height=80></v-img>
+                <p>正确答案: {{currentIssue.answer.join('')}} </p>
+                <div v-for="(item,key) in rightAnswers" :key="key">
+                  {{item.key+'.&nbsp;&nbsp;' +item.value}}
+                </div>
               </div>
             </scroll-bar>
           </v-img>
           <v-btn block icon @click="done(1)" :ripple="false">
-            <v-img v-if="!isLast" :src="require('../assets/next-btn.png')" contain></v-img>
-            <v-img v-else :src="require('../assets/finish-btn.png')" contain></v-img>
+            <v-img v-if='!isLast' :src="require('../assets/next-btn.png')" contain></v-img>
+            <v-img v-else :src="require('../assets/finish-btn.png')" contain> </v-img>
           </v-btn>
         </template>
         <template v-else>
           <v-img :src="require('../assets/right.png')"></v-img>
           <v-btn block icon @click="done(2)" :ripple="false">
-            <v-img v-if="!isLast" :src="require('../assets/next-btn.png')" contain></v-img>
-            <v-img v-else :src="require('../assets/finish-btn.png')" contain></v-img>
+            <v-img v-if='!isLast' :src="require('../assets/next-btn.png')" contain></v-img>
+            <v-img v-else :src="require('../assets/finish-btn.png')" contain> </v-img>
           </v-btn>
         </template>
       </div>
@@ -198,142 +186,134 @@
 
 
 <script>
-import Api from "../api.js";
-import scrollBar from "vue-scroll-bar";
+import Api from '../api.js'
+import scrollBar from 'vue-scroll-bar';
 
 export default {
-  name: "topicPage",
+  name: 'topicPage',
   components: { scrollBar },
   data: () => ({
     scrollTrackYStyle: {
-      backgroundColor: "transparent",
-      right: "43px",
-      display: "block!important"
+      backgroundColor: 'transparent',
+      right: '43px',
+      display: 'block!important'
     },
     scrollBarYStyle: {
-      backgroundColor: "#f8cd90"
+      backgroundColor: '#f8cd90'
     },
     activeIndex: 0,
     issues: [],
     response: [],
-    reply_id: "",
+    reply_id: '',
     options: {
       switch: false,
       tipType: 2
     }
   }),
   computed: {
-    isLast() {
-      return this.activeIndex + 1 >= this.issues.length;
+    isLast () {
+      return this.activeIndex + 1 >= this.issues.length
     },
-    btnName() {
-      return this.isLast ? "查看成绩" : "下一题";
+    btnName () {
+      return this.isLast ? '查看成绩' : '下一题'
     },
-    currentIssue() {
-      return this.issues[this.activeIndex];
+    currentIssue () {
+      return this.issues[this.activeIndex]
     },
-    correct() {
-      return this.currentIssue.answer.join(",");
+    correct () {
+      return this.currentIssue.answer.join(',')
     },
-    rightAnswers() {
+    rightAnswers () {
       return this.currentIssue.options.filter(item => {
-        return item.is_right == 1;
-      });
+        return item.is_right == 1
+      })
     }
   },
-  beforeMount() {
+  beforeMount () {
     let params = {
       activity_id: this.$store.state.explain.id
-    };
+    }
     Api.question(params).then(res => {
-      if (res.code === 1001) {
-        this.issues = [];
-        this.reply_id = "";
-        this.$router.push("score");
-        return false;
-      }
-      let temp = res.questions;
+      let temp = res.questions
       temp.forEach(item => {
-        item.title = item.title.replace(/\(/g, "（").replace(/\)/g, "）");
+        item.title = item.title.replace(/\(/g, '（').replace(/\)/g, '）')
       })
-      this.issues = temp;
-      this.reply_id = res.reply_id;
-    });
+      this.issues = temp
+      this.reply_id = res.reply_id
+    })
   },
   methods: {
-    select(item, arr) {
+    select (item, arr) {
       if (this.currentIssue.type == 2) {
         /* 多选 */
         if (item.check) {
           item.check = false;
-          let i = this.response.indexOf(item.key);
-          this.response.splice(i, 1);
+          let i = this.response.indexOf(item.key)
+          this.response.splice(i, 1)
         } else {
           item.check = true;
-          this.response.push(item.key);
+          this.response.push(item.key)
         }
       } else {
         /* 单选 */
         if (item.check) {
-          return;
+          return
         } else {
           arr.forEach(v => {
-            v.check = false;
+            v.check = false
           });
-          item.check = true;
-          this.response = [item.key];
+          item.check = true
+          this.response = [item.key]
         }
       }
     },
-    next() {
+    next () {
       if (this.response.length == 0) {
         /* 至少选一项 */
-        this.$toast({ message: "至少选一项", duration: 2000 });
+        this.$toast({ message: '至少选一项', duration: 2000 })
       } else {
-        let question = this.currentIssue;
+        let question = this.currentIssue
         if (question.type == 2) {
           /* 多选 */
-          question.answer.sort();
-          this.response.sort();
+          question.answer.sort()
+          this.response.sort()
           this.options = {
             switch: true,
-            tipType:
-              this.response.toString() == question.answer.toString() ? 2 : 1
-          };
+            tipType: this.response.toString() == question.answer.toString() ? 2 : 1
+          }
         } else {
           /* 单选 */
           this.options = {
             switch: true,
             tipType: this.response[0] == question.answer[0] ? 2 : 1
-          };
+          }
         }
 
-        let arr = question.options
-          .filter(v => {
-            return this.response.indexOf(v.key) >= 0;
-          })
-          .map(i => {
-            return i.id;
-          });
+        let arr = question.options.filter((v) => {
+          return this.response.indexOf(v.key) >= 0
+        }).map(i => {
+          return i.id
+        })
 
         let params = {
           reply_id: this.reply_id,
           question_id: question.question_id,
           answer: JSON.stringify(arr)
-        };
-        Api.reply(params);
+        }
+        Api.reply(params)
       }
     },
-    done(i) {
-      this.options.switch = false;
-      this.options.tipType = 2;
-      this.response = [];
+    done (i) {
+      this.options.switch = false
+      this.options.tipType = 2
+      this.response = []
       if (i > 0) {
         setTimeout(() => {
-          this.isLast ? this.$router.replace("score") : (this.activeIndex += 1);
-        }, 350);
+          this.isLast ? this.$router.replace('score') : this.activeIndex += 1
+        }, 350)
       }
     }
+
   }
-};
+}
 </script>

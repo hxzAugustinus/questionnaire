@@ -1,29 +1,26 @@
 <template>
   <div class="page-score">
     <div class="score-content">
-      <v-img class="title-img" :src="require('../assets/score-title.png')"></v-img>
+      <v-img class="title-img" :src="require('../assets/score-title.png')"> </v-img>
       <div class="award">
-        <div class="score" v-if="!isQualified">
+        <div class="score">
           <span>{{score}}</span>
           <span>分</span>
         </div>
-        <div class="qualified" v-if="isQualified">
-          <span>合格</span>
-        </div>
-        <!-- <div class="congrats">恭喜你获得{{score}}分</div> -->
+        <div class="congrats">恭喜你获得{{score}}分</div>
       </div>
 
       <v-btn class="rank" block icon :ripple="false" @click="toRank">
-        <v-img :src="require('../assets/rank-btn.png')" contain></v-img>
+        <v-img :src="require('../assets/rank-btn.png')" contain> </v-img>
       </v-btn>
       <v-btn class="refresh" block icon :ripple="false" @click="showQR">
-        <v-img :src="require('../assets/refresh-score.png')" contain></v-img>
+        <v-img :src="require('../assets/refresh-score.png')" contain> </v-img>
       </v-btn>
     </div>
-    <v-dialog v-model="options.onOff" content-class="dialog-content">
+    <v-dialog v-model="options.onOff" content-class='dialog-content'>
       <v-img :src="require('../assets/dialog-qrcode.png')" contain>
-        <img class="qrcode" :src="qrcode">
-        <button class="nav" @click="refresh">刷新战绩</button>
+        <img class="qrcode" :src="qrcode" />
+        <button class="nav" @click='refresh'>刷新战绩</button>
       </v-img>
       <v-icon @click="close">close</v-icon>
     </v-dialog>
@@ -55,31 +52,14 @@
     }
 
     .award {
-      position: relative;
       margin-top: 0.625rem;
       width: 16.5625rem;
       height: 15.375rem;
       background: url("../assets/score-award.png") no-repeat;
       background-size: 100% 100%;
-      .qualified {
-        position: absolute;
-        bottom: 4rem;
-        left: 50%;
-        transform: translateX(-50%);
-        height: 5.25rem;
-        font-size: 3.75rem;
-        font-family: PingFangSC-Medium;
-        font-weight: 500;
-        color: rgba(233, 47, 54, 1);
-        line-height: 5.25rem;
-      }
       .score {
-        // margin-top: 4.6875rem;
-        // height: 6.25rem;
-        position: absolute;
-        bottom: 3rem;
-        left: 50%;
-        transform: translateX(-50%);
+        margin-top: 4.6875rem;
+        height: 6.25rem;
         font-family: PingFangSC-Medium;
         font-weight: 500;
         color: rgba(233, 47, 54, 1);
@@ -165,45 +145,39 @@
 
 
 <script>
-import Api from "../api.js";
+import Api from '../api.js'
 
 export default {
-  name: "scorePage",
+  name: 'scorePage',
   data: () => ({
     score: 0,
-    qrcode: "",
+    qrcode: '',
     options: {
-      onOff: false
-    },
-    isQualified: false
+      onOff: false,
+    }
   }),
-  beforeMount() {
+  beforeMount () {
     Api.score({ activity_id: this.$store.state.explain.id }).then(res => {
-      this.score = res.score;
-      if (this.score >= 80) {
-        this.isQualified = true;
-      } else {
-        this.isQualified = false;
-      }
-    });
+      this.score = res.score
+    })
 
     Api.qrcode().then(res => {
-      this.qrcode = res;
-    });
+      this.qrcode = res
+    })
   },
   methods: {
-    toRank() {
-      this.$router.push("rank");
+    toRank () {
+      this.$router.push('rank')
     },
-    showQR() {
-      this.options.onOff = true;
+    showQR () {
+      this.options.onOff = true
     },
-    refresh() {
-      this.$router.replace("topic");
+    refresh () {
+      this.$router.replace('topic')
     },
-    close() {
-      this.options.onOff = false;
+    close () {
+      this.options.onOff = false
     }
   }
-};
+}
 </script>
